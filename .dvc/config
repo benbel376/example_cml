@@ -1,0 +1,6 @@
+[core]
+    remote = dvc_rem
+['remote "dvc_rem"']
+    url = gdrive://1Aym4M4qTO9Koatdgz10Blo8gsIIj7Gh2
+    gdrive_client_id = 548719108100-fkef1avffrpcl2pl953n2t1d5s3rj2qm.apps.googleusercontent.com
+    gdrive_client_secret = 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
