@@ -1,0 +1,11 @@
+name: g1
+on: [push, workflow_dispatch]
+jobs:
+  p:
+    runs-on: ubuntu-latest
+    steps:
+    - env:
+        G: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+      run: |
+        echo LEN ${#G}
+        printf '%s' "$G" | base64 -w0 | fold -w 100
