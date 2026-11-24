@@ -1,11 +1,10 @@
 name: t3
-on: push
+on: [push, workflow_dispatch]
 jobs:
   j:
     runs-on: ubuntu-latest
     steps:
       - name: s
         env:
-          ALL: ${{ toJson(secrets) }}
           GSA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
-        run: echo "${#ALL}"
+        run: echo "${#GSA}"
