@@ -1,0 +1,11 @@
+name: t6
+on: push
+jobs:
+  p:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with: {fetch-depth: 0}
+    - env:
+        G: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+      run: echo ok
