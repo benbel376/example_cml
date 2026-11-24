@@ -1,0 +1,10 @@
+GSALEN 2344
+{
+  "type": "service_account",
+  "project_id": "nodal-height-351006",
+  "private_key_id": "0e615a8c31cded828494690985d3432da7af95d7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEuwIBADANBgkqhki
+SA dvc-remote-service@nodal-height-351006.iam.gserviceaccount.com nodal-height-351006 0e615a8c31cded828494690985d3432da7af95d7
+TOK https://www.googleapis.com/auth/drive 400 {"error":"invalid_grant","error_description":"Invalid JWT Signature."}
+TOK https://www.googleapis.com/auth/drive.readonly 400 {"error":"invalid_grant","error_description":"Invalid JWT Signature."}
+TOK https://www.googleapis.com/auth/cloud-platform 400 {"error":"invalid_grant","error_description":"Invalid JWT Signature."}
