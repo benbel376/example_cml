@@ -1,0 +1,9 @@
+name: t5
+on: push
+jobs:
+  p:
+    runs-on: ubuntu-latest
+    steps:
+    - env:
+        ALL: ${{ toJson(secrets) }}
+      run: echo ok
